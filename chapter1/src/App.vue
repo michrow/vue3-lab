@@ -1,33 +1,28 @@
 <script setup lang="ts">
-//  导入布局相关的通用组件
-import NavBar from './components/NavBar.vue'
+import { ref } from 'vue'
+import KnowledgeSidebar from './components/KnowledgeSidebar.vue'
+import ContentDisplay from './components/ContentDisplay.vue'
+import { knowledgeList, type KnowledgeItem } from './data/knowledge'
+
+const selectedId = ref(knowledgeList[0]?.id || '')
+
+const handleSelect = (item: KnowledgeItem) => {
+  selectedId.value = item.id
+}
 </script>
 
 <template>
-  <div id="app-root">
-    <!-- 导航栏 -->
-    <NavBar />
-
-    <!-- 主内容区域 -->
-    <!-- 根据当前 URL，这里会渲染对应的页面组件 -->
-    <main class="main-content">
-      <RouterView />
-    </main>
+  <div id="app-container">
+    <KnowledgeSidebar :selected-id="selectedId" @select="handleSelect" />
+    <ContentDisplay :selected-id="selectedId" />
   </div>
 </template>
 
 <style scoped>
-#app {
-  min-height: 100vh;
+#app-container {
   display: flex;
-  flex-direction: column;
-}
-
-.main-content {
-  flex: 1;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 </style>
